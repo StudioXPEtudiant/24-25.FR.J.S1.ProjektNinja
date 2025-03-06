@@ -362,9 +362,37 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1035399920037238762, guid: c56b4d47aff7ce243b97520d387534af, type: 3}
+      propertyPath: speed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035399920037238762, guid: c56b4d47aff7ce243b97520d387534af, type: 3}
+      propertyPath: dashPower
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035399920037238762, guid: c56b4d47aff7ce243b97520d387534af, type: 3}
+      propertyPath: maxHorizontalVelocity
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 3893621182431093070, guid: c56b4d47aff7ce243b97520d387534af, type: 3}
       propertyPath: m_Name
       value: PlayerMain
+      objectReference: {fileID: 0}
+    - target: {fileID: 5029612822502182819, guid: c56b4d47aff7ce243b97520d387534af, type: 3}
+      propertyPath: m_Interpolate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5029612822502182819, guid: c56b4d47aff7ce243b97520d387534af, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5029612822502182819, guid: c56b4d47aff7ce243b97520d387534af, type: 3}
+      propertyPath: m_CollisionDetection
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5029612822502182819, guid: c56b4d47aff7ce243b97520d387534af, type: 3}
+      propertyPath: m_IncludeLayers.m_Bits
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8286960131661421277, guid: c56b4d47aff7ce243b97520d387534af, type: 3}
       propertyPath: m_LocalPosition.x
@@ -444,7 +472,7 @@ TerrainCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
+  m_ProvidesContacts: 1
   m_Enabled: 1
   serializedVersion: 2
   m_TerrainData: {fileID: 15600000, guid: 947e3b3d8ff68824a96398c9ce7007f6, type: 2}
@@ -729,6 +757,10 @@ PrefabInstance:
     - target: {fileID: 8477338164440587678, guid: 581d9c71d6254b448872f9341060f063, type: 3}
       propertyPath: m_Name
       value: ennemi
+      objectReference: {fileID: 0}
+    - target: {fileID: 8477338164440587679, guid: 581d9c71d6254b448872f9341060f063, type: 3}
+      propertyPath: m_IsKinematic
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
