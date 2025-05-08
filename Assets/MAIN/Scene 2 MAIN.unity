@@ -4281,6 +4281,10 @@ PrefabInstance:
       propertyPath: maxHorizontalVelocity
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1116833979553055926, guid: c56b4d47aff7ce243b97520d387534af, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3893621182431093070, guid: c56b4d47aff7ce243b97520d387534af, type: 3}
       propertyPath: m_Name
       value: PlayerMain

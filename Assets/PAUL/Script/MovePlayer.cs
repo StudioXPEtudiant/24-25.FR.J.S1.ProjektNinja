@@ -8,23 +8,23 @@ namespace PAUL.Script
 {
     public class MovePlayer : MonoBehaviour
     {
-        // Player
-        [SerializeField] private Transform pos;
+        // Références
+        [SerializeField] private Transform visualTransform; // Enfant du joueur, contient le mesh visuel
         [SerializeField] private Rigidbody playerRb;
-        
-        // Variables et stats
-        [SerializeField] private float speed = 2f; // Vitesse normale ajustée
-        [SerializeField] private float dashPower = 10f; // Puissance du dash
-        [SerializeField] private float dashDuration = 0.2f; // Durée du dash
-        [SerializeField] private float dashCooldown = 2f; // Cooldown du dash
+
+        // Variables de mouvement
+        [SerializeField] private float speed = 2f;
+        [SerializeField] private float dashPower = 10f;
+        [SerializeField] private float dashDuration = 0.2f;
+        [SerializeField] private float dashCooldown = 2f;
+
         private bool isDashing = false;
         private bool canDash = true;
         private float dashTimeRemaining;
         private float dashCooldownRemaining;
 
-        // Variables internes
         private Vector3 movementDirection = Vector3.zero;
-        
+
         void Update()
         {
             movementDirection = Vector3.zero;
@@ -36,13 +36,20 @@ namespace PAUL.Script
             if (Input.GetKey(KeyCode.A)) movementDirection.z = 1;
             else if (Input.GetKey(KeyCode.D)) movementDirection.z = -1;
 
+            // Appliquer la rotation du visuel si mouvement
+            if (movementDirection != Vector3.zero )
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(movementDirection.normalized, Vector3.up);
+                transform.rotation = targetRotation;
+            }
+
             // Dash
             if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
             {
                 StartDash();
             }
 
-            // Gestion du cooldown du dash
+            // Gestion cooldown
             if (dashCooldownRemaining > 0)
             {
                 dashCooldownRemaining -= Time.deltaTime;
@@ -73,7 +80,7 @@ namespace PAUL.Script
                 Vector3 force = movementDirection.normalized * speed;
                 playerRb.AddForce(force, ForceMode.VelocityChange);
 
-                // Limiter la vitesse pour éviter l'accélération infinie
+                // Limiter la vitesse horizontale
                 Vector3 horizontalVelocity = new Vector3(playerRb.velocity.x, 0f, playerRb.velocity.z);
                 if (horizontalVelocity.magnitude > speed)
                 {
@@ -90,16 +97,15 @@ namespace PAUL.Script
             dashTimeRemaining = dashDuration;
             dashCooldownRemaining = dashCooldown;
 
-            // Appliquer la vélocité du dash dans la direction actuelle
             Vector3 dashVelocity = movementDirection.normalized * dashPower;
             playerRb.velocity = new Vector3(dashVelocity.x, playerRb.velocity.y, dashVelocity.z);
-            playerRb.useGravity = false; // Désactive la gravité pour un dash plus fluide
+            playerRb.useGravity = false;
         }
 
         private void StopDash()
         {
             isDashing = false;
-            playerRb.useGravity = true; // Réactive la gravité après le dash
+            playerRb.useGravity = true;
         }
     }
 }
