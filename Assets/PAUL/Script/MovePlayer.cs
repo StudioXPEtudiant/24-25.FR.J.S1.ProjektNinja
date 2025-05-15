@@ -8,11 +8,8 @@ namespace PAUL.Script
 {
     public class MovePlayer : MonoBehaviour
     {
-        // Références
-        [SerializeField] private Transform visualTransform; // Enfant du joueur, contient le mesh visuel
         [SerializeField] private Rigidbody playerRb;
 
-        // Variables de mouvement
         [SerializeField] private float speed = 2f;
         [SerializeField] private float dashPower = 10f;
         [SerializeField] private float dashDuration = 0.2f;
@@ -29,27 +26,24 @@ namespace PAUL.Script
         {
             movementDirection = Vector3.zero;
 
-            // Déplacement avec ZQSD
             if (Input.GetKey(KeyCode.W)) movementDirection.x = 1;
             else if (Input.GetKey(KeyCode.S)) movementDirection.x = -1;
 
             if (Input.GetKey(KeyCode.A)) movementDirection.z = 1;
             else if (Input.GetKey(KeyCode.D)) movementDirection.z = -1;
 
-            // Appliquer la rotation du visuel si mouvement
-            if (movementDirection != Vector3.zero )
+            // Faire tourner le joueur lui-même
+            if (movementDirection != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(movementDirection.normalized, Vector3.up);
                 transform.rotation = targetRotation;
             }
 
-            // Dash
             if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
             {
                 StartDash();
             }
 
-            // Gestion cooldown
             if (dashCooldownRemaining > 0)
             {
                 dashCooldownRemaining -= Time.deltaTime;
@@ -80,7 +74,6 @@ namespace PAUL.Script
                 Vector3 force = movementDirection.normalized * speed;
                 playerRb.AddForce(force, ForceMode.VelocityChange);
 
-                // Limiter la vitesse horizontale
                 Vector3 horizontalVelocity = new Vector3(playerRb.velocity.x, 0f, playerRb.velocity.z);
                 if (horizontalVelocity.magnitude > speed)
                 {
