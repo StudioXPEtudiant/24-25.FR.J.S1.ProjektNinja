@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class BaseballBat : MonoBehaviour
 {
+    public string pickupMessage = "Fais clic droit pour frapper";
+    [SerializeField] private float messageDuration = 2f; // Durée modifiable dans l’inspecteur
+
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -11,7 +14,14 @@ public class BaseballBat : MonoBehaviour
             {
                 attack.HasBat = true;
                 Debug.Log("Batte ramassée !");
-                Destroy(gameObject); // Retire la batte de la scène
+
+                BatPickupMessage messageUI = FindObjectOfType<BatPickupMessage>();
+                if (messageUI != null)
+                {
+                    messageUI.ShowMessage(pickupMessage, messageDuration);
+                }
+
+                Destroy(gameObject);
             }
         }
     }

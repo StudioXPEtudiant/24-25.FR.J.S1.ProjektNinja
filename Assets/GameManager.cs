@@ -3,35 +3,42 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager Instance;
+
     public GameObject deathScreen;
     public GameObject pauseMenu;
+
+    public bool hasBaseballBat = false;
 
     private bool isGameOver = false;
     private bool isPaused = false;
 
+    void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
-        // Cache les menus au démarrage
-        if (deathScreen != null)
-            deathScreen.SetActive(false);
-
-        if (pauseMenu != null)
-            pauseMenu.SetActive(false);
-
-        // Assure que le jeu tourne normalement
+        HideMenus();
         Time.timeScale = 1f;
     }
 
     void Update()
     {
-        // Redémarre la scène si joueur est mort et appuie sur R
         if (isGameOver && Input.GetKeyDown(KeyCode.R))
         {
-            Time.timeScale = 1f;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            RestartGame();
         }
 
-        // Pause / Reprise avec Échap
         if (!isGameOver && Input.GetKeyDown(KeyCode.Escape))
         {
             if (isPaused)
@@ -44,11 +51,10 @@ public class GameManager : MonoBehaviour
     public void ShowDeathScreen()
     {
         if (deathScreen != null)
-        {
             deathScreen.SetActive(true);
-            Time.timeScale = 0f;
-            isGameOver = true;
-        }
+
+        Time.timeScale = 0f;
+        isGameOver = true;
     }
 
     public void PauseGame()
@@ -75,8 +81,26 @@ public class GameManager : MonoBehaviour
         Application.Quit();
 
 #if UNITY_EDITOR
-        // Pour arrêter dans l'éditeur Unity
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
+    }
+
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        isGameOver = false;
+        isPaused = false;
+
+        HideMenus();
+
+        SceneManager.LoadScene(0); // Recharger la première scène (index 0)
+    }
+
+    private void HideMenus()
+    {
+        if (deathScreen != null)
+            deathScreen.SetActive(false);
+        if (pauseMenu != null)
+            pauseMenu.SetActive(false);
     }
 }

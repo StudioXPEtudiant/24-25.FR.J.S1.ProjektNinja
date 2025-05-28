@@ -7,6 +7,15 @@ public class PlayerAttack : MonoBehaviour
     public int batDamage = 2;
     public LayerMask enemyLayer;
 
+    void Start()
+    {
+        // Vérifie si le GameManager indique que le joueur possède la batte
+        if (GameManager.Instance != null)
+        {
+            HasBat = GameManager.Instance.hasBaseballBat;
+        }
+    }
+
     void Update()
     {
         if (HasBat && Input.GetMouseButtonDown(0)) // Clic gauche
@@ -17,7 +26,9 @@ public class PlayerAttack : MonoBehaviour
 
     void Attack()
     {
-        Collider[] hitEnemies = Physics.OverlapSphere(transform.position + transform.forward, attackRange, enemyLayer);
+        // Détection des ennemis dans la portée d'attaque
+        Vector3 attackPoint = transform.position + transform.forward;
+        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint, attackRange, enemyLayer);
 
         foreach (Collider enemy in hitEnemies)
         {
