@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class BaseballBat : MonoBehaviour
 {
-    public string pickupMessage = "Fais clic droit pour frapper";
-    [SerializeField] private float messageDuration = 2f; // Durée modifiable dans l’inspecteur
+    public BatPickupMessage messageUI; // Référence au script d’affichage de message
+    public string message = "Fais clic gauche pour frapper";
+    public float messageDuration = 2f;
 
     void OnTriggerEnter(Collider other)
     {
@@ -14,15 +15,14 @@ public class BaseballBat : MonoBehaviour
             {
                 attack.HasBat = true;
                 Debug.Log("Batte ramassée !");
-
-                BatPickupMessage messageUI = FindObjectOfType<BatPickupMessage>();
-                if (messageUI != null)
-                {
-                    messageUI.ShowMessage(pickupMessage, messageDuration);
-                }
-
-                Destroy(gameObject);
             }
+
+            if (messageUI != null)
+            {
+                messageUI.ShowMessage(message, messageDuration);
+            }
+
+            Destroy(gameObject); // Supprime la batte après ramassage
         }
     }
 }

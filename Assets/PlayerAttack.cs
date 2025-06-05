@@ -7,9 +7,12 @@ public class PlayerAttack : MonoBehaviour
     public int batDamage = 2;
     public LayerMask enemyLayer;
 
+    [Header("Cooldown")]
+    public float attackCooldown = 0.5f;
+    private float cooldownTimer = 0f;
+
     void Start()
     {
-        // Vérifie si le GameManager indique que le joueur possède la batte
         if (GameManager.Instance != null)
         {
             HasBat = GameManager.Instance.hasBaseballBat;
@@ -18,15 +21,19 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
-        if (HasBat && Input.GetMouseButtonDown(0)) // Clic gauche
+        // Réduction du timer de cooldown
+        if (cooldownTimer > 0)
+            cooldownTimer -= Time.deltaTime;
+
+        if (HasBat && Input.GetMouseButtonDown(0) && cooldownTimer <= 0f)
         {
             Attack();
+            cooldownTimer = attackCooldown;
         }
     }
 
     void Attack()
     {
-        // Détection des ennemis dans la portée d'attaque
         Vector3 attackPoint = transform.position + transform.forward;
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint, attackRange, enemyLayer);
 

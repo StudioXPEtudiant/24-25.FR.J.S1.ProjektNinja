@@ -7,12 +7,15 @@ public class PlayerStats : MonoBehaviour
     public int coinCount = 0;
 
     private UIManager uiManager;
+    private PlayerShield playerShield;
 
     void Start()
     {
         currentHealth = maxHealth;
 
         uiManager = FindObjectOfType<UIManager>();
+        playerShield = GetComponent<PlayerShield>();
+
         if (uiManager != null)
         {
             uiManager.UpdateHealth(currentHealth);
@@ -40,6 +43,13 @@ public class PlayerStats : MonoBehaviour
 
     public void TakeDamage(int amount)
     {
+        // 🔒 Protection avec le bouclier
+        if (playerShield != null && playerShield.IsProtected())
+        {
+            Debug.Log("Dégâts bloqués par le bouclier !");
+            return;
+        }
+
         currentHealth -= amount;
         if (currentHealth < 0) currentHealth = 0;
 
