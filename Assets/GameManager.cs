@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
 
         HideMenus();
 
-        SceneManager.LoadScene(0); // Recharger la première scène (index 0)
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex); // Recharge la scène actuelle
     }
 
     private void HideMenus()

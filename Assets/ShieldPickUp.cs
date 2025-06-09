@@ -1,12 +1,11 @@
 using UnityEngine;
-using TMPro;
-using System.Collections;
 
 public class ShieldPickup : MonoBehaviour
 {
-    public TMP_Text messageText; // Référence au texte UI
+    [SerializeField] private string pickupMessage = "Fais clic droit pour te protéger";
+    [SerializeField] private float messageDuration = 2f;
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
@@ -15,20 +14,16 @@ public class ShieldPickup : MonoBehaviour
             {
                 shield.HasShield = true;
                 Debug.Log("Bouclier ramassé !");
-                StartCoroutine(ShowMessage("Fais clic droit pour te protéger", 3f));
+
+                // ✅ Appel au UIManager
+                UIManager ui = FindObjectOfType<UIManager>();
+                if (ui != null)
+                {
+                    ui.ShowMessage(pickupMessage, messageDuration);
+                }
             }
 
-            Destroy(gameObject); // Supprime l'objet ramassé
+            Destroy(gameObject);
         }
-    }
-
-    IEnumerator ShowMessage(string message, float duration)
-    {
-        messageText.text = message;
-        messageText.gameObject.SetActive(true);
-
-        yield return new WaitForSeconds(duration);
-
-        messageText.gameObject.SetActive(false);
     }
 }
