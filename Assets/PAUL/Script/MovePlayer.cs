@@ -32,7 +32,7 @@ namespace PAUL.Script
             if (Input.GetKey(KeyCode.A)) movementDirection.z = 1;
             else if (Input.GetKey(KeyCode.D)) movementDirection.z = -1;
 
-            // Faire tourner le joueur lui-même
+            // Faire tourner le joueur dans la direction du mouvement
             if (movementDirection != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(movementDirection.normalized, Vector3.up);
@@ -80,6 +80,13 @@ namespace PAUL.Script
                     horizontalVelocity = horizontalVelocity.normalized * speed;
                     playerRb.velocity = new Vector3(horizontalVelocity.x, playerRb.velocity.y, horizontalVelocity.z);
                 }
+            }
+            else
+            {
+                // Freinage progressif pour supprimer la glissade
+                Vector3 horizontalVelocity = new Vector3(playerRb.velocity.x, 0f, playerRb.velocity.z);
+                horizontalVelocity = Vector3.Lerp(horizontalVelocity, Vector3.zero, 0.1f); // Ajuster 0.1f selon la rapidité du freinage
+                playerRb.velocity = new Vector3(horizontalVelocity.x, playerRb.velocity.y, horizontalVelocity.z);
             }
         }
 

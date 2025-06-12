@@ -10,6 +10,8 @@ public class PlayerStats : MonoBehaviour
     private UIManager uiManager;
     private PlayerShield playerShield;
 
+    public DamageFlash damageFlash; // 🔴 Ajout du lien vers le script de flash
+
     void Start()
     {
         currentHealth = maxHealth;
@@ -72,6 +74,10 @@ public class PlayerStats : MonoBehaviour
 
         currentHealth = Mathf.Max(currentHealth - amount, 0);
         Debug.Log($"Dégâts subis : {amount} => {currentHealth}");
+
+        // 🔴 Ajout de l'effet visuel de dégât
+        if (damageFlash != null)
+            damageFlash.TakeDamage();
 
         UpdateUI();
 
